@@ -23,6 +23,9 @@ jobs:
         with:
           mdbook-version: "latest"
 
+      - name: Install mdbook-variables
+        run: cargo install mdbook-variables
+
       - run: mdbook build docs
 
       - name: Deploy
