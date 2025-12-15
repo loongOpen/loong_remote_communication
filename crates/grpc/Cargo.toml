@@ -1,0 +1,30 @@
+[package]
+name = "grpc"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+description = "gRPC service definitions for remote RPC"
+
+[dependencies]
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+tonic = { workspace = true }
+tonic-prost = { workspace = true }
+tonic-web = { workspace = true }
+tonic-health = { workspace = true }
+tonic-reflection = { workspace = true }
+prost = { workspace = true }
+
+[dev-dependencies]
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = [
+  "env-filter",
+  "fmt",
+  "ansi",
+] }
+
+[build-dependencies]
+tonic-prost-build = "0.14"
+
+[[test]]
+name = "simple_grpc"
+path = "tests/simple_grpc.rs"

@@ -1,0 +1,41 @@
+[book]
+title = "loong_remote_communication"
+authors = ["wangxu"]
+language = "zh"
+
+
+[output.html]
+smart-punctuation = true
+mathjax-support = true
+site-url = "/mdBook/"
+git-repository-url = "https://github.com/loongOpen/loong_remote_communication"
+edit-url-template = "https://github.com/loongOpen/loong_remote_communication/edit"
+hash-files = true
+
+[output.html.playground]
+editable = true
+line-numbers = true
+
+[output.html.code.hidelines]
+python = "~"
+
+[output.html.search]
+limit-results = 20
+use-boolean-and = true
+boost-title = 2
+boost-hierarchy = 2
+boost-paragraph = 1
+expand = true
+heading-split-level = 2
+
+[preprocessor.variables.variables]
+repo_url = "https://github.com/loongOpen/loong_remote_communication"
+
+# [output.html.redirect]
+# "/format/config.html" = "configuration/index.html"
+
+# [preprocessor.guide-helper]
+# command = "cargo run --quiet --manifest-path guide-helper/Cargo.toml"
+
+# [build]
+# extra-watch-dirs = ["guide-helper/src"]
