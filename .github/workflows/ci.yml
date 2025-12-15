@@ -1,0 +1,149 @@
+name: Build and Release
+
+on:
+  push:
+    branches: ["main"]
+    tags: ["v*.*.*"]
+  pull_request:
+    branches: ["main"]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  # test:  #todo 需要在test 中部署本地 mqtt broker
+  #   name: Test
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     # 安装依赖 (针对 gRPC/Protobuf)
+  #     - name: Install Dependencies
+  #       run: |
+  #         sudo apt-get update
+  #         sudo apt-get install -y protobuf-compiler
+  #     - uses: dtolnay/rust-toolchain@nightly
+  #     - uses: Swatinem/rust-cache@v2
+  #     - run: cargo test --workspace --features="grpc,rest"
+
+  build:
+    name: Build ${{ matrix.target }}
+    # 根据 matrix 动态选择运行环境：Windows 用 windows-latest，其他的用 ubuntu-latest
+    runs-on: ${{ matrix.os }}
+    # needs: test
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux x64: 原生编译
+          - target: x86_64-unknown-linux-gnu
+            os: ubuntu-latest
+            use_cross: false
+            archive_ext: tar.gz
+
+          # Linux ARM64: 使用 cross 工具 (Docker) 编译 #todo 麻烦，没法安装protobuf-compiler
+          # - target: aarch64-unknown-linux-gnu
+          #   os: ubuntu-latest
+          #   use_cross: true
+          #   archive_ext: tar.gz
+
+          # Windows: 原生编译 (注意：通常 Windows 推荐用 msvc 而不是 gnu)
+          - target: x86_64-pc-windows-msvc
+            os: windows-latest
+            use_cross: false
+            archive_ext: zip
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # Linux (非 Cross): 安装 cmake 和 protoc
+      - name: Install Deps (Linux)
+        if: runner.os == 'Linux' && !matrix.use_cross
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y protobuf-compiler
+
+      # Windows: 使用 Chocolatey 安装 protoc
+      - name: Install Deps (Windows)
+        if: runner.os == 'Windows'
+        run: choco install protoc
+
+      # 安装 Rust 工具链
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: ${{ matrix.target }}
+
+      # 缓存依赖
+      - uses: Swatinem/rust-cache@v2
+        with:
+          key: ${{ matrix.target }}
+
+      # 安装 cross 工具 (仅当 use_cross 为 true 时)
+      - name: Install Cross
+        if: matrix.use_cross
+        run: cargo install cross --git https://github.com/cross-rs/cross
+
+      # 构建二进制文件
+      # 如果是 cross 模式，命令变成 "cross build"，否则是 "cargo build"
+      - name: Build
+        shell: bash
+        run: |
+          CMD="cargo"
+          if [[ "${{ matrix.use_cross }}" == "true" ]]; then
+            CMD="cross"
+          fi
+          $CMD build --release --target ${{ matrix.target }} --features="grpc,rest"
+
+      # 打包 (兼容 Windows/Linux)
+      - name: Package
+        shell: bash
+        run: |
+          # 定义需要打包的二进制名称
+          BINS=("proxyd" "portald" "portal_hub_grpc" "portal_hub_rest")
+
+          STAGING="remote_rpc_rs-${{ matrix.target }}"
+          mkdir -p "$STAGING"
+
+          RELEASE_DIR="target/${{ matrix.target }}/release"
+
+          for bin in "${BINS[@]}"; do
+            # 检查是否有 .exe 后缀 (Windows)
+            if [ -f "$RELEASE_DIR/$bin.exe" ]; then
+              cp "$RELEASE_DIR/$bin.exe" "$STAGING/"
+            elif [ -f "$RELEASE_DIR/$bin" ]; then
+              cp "$RELEASE_DIR/$bin" "$STAGING/"
+            fi
+          done
+
+          # 压缩
+          if [ "${{ matrix.archive_ext }}" = "zip" ]; then
+            7z a "$STAGING.zip" "$STAGING"
+            echo "ASSET=$STAGING.zip" >> $GITHUB_ENV
+          else
+            tar -czvf "$STAGING.tar.gz" "$STAGING"
+            echo "ASSET=$STAGING.tar.gz" >> $GITHUB_ENV
+          fi
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: build-${{ matrix.target }}
+          path: ${{ env.ASSET }}
+
+  release:
+    name: Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: artifacts/*
+          generate_release_notes: true
