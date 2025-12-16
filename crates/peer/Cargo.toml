@@ -1,0 +1,65 @@
+[package]
+name = "peer"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.70"
+description = "WebRTC peer connection management with DataChannel support"
+
+[dependencies]
+# Internal signal crate
+signal = { path = "../signal" }
+
+# WebRTC implementation
+webrtc = { workspace = true }
+
+# Async runtime - extensive features needed for networking
+tokio = { workspace = true, features = [
+    "net",           # TcpListener, TcpStream, UnixListener, UnixStream
+    "sync",          # mpsc, RwLock, Mutex, Notify
+    "rt",            # Runtime
+    "time",          # timeout, Duration
+    "io-util",       # AsyncRead, AsyncWrite traits
+] }
+
+# TLS for WebRTC DTLS
+rustls = { workspace = true }
+
+# Byte buffer utilities
+bytes = { workspace = true }
+
+# Serialization for RTC messages
+serde = { workspace = true }
+serde_json = { workspace = true }
+
+# Error handling
+anyhow = { workspace = true }
+thiserror = { workspace = true }
+
+# Timestamp support
+chrono = { workspace = true }
+
+# Async utilities
+futures = { workspace = true }
+
+# Lazy static for RTC configuration
+once_cell = { workspace = true }
+
+# Logging
+tracing = { workspace = true }
+
+# Async trait support
+async-trait = { workspace = true }
+
+[dev-dependencies]
+# CLI for test binaries
+clap = { workspace = true }
+
+# Logging for tests (with color support)
+tracing-subscriber = { workspace = true, features = ["env-filter", "fmt", "ansi"] }
+
+# Testing utilities
+tokio-test = "0.4"
+
+[[test]]
+name = "peer_test"
+path = "tests/peer_test.rs"

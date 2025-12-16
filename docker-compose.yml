@@ -1,0 +1,114 @@
+version: "3.8"
+
+# ============ 共享配置 ============
+# Rust 编译环境配置（用于编译和测试服务）
+x-rust-settings: &rust-settings
+  build:
+    context: .
+    dockerfile: Dockerfile
+  volumes:
+    - ./:/workspace
+    - ${HOME}/.cargo/registry:/cargo/registry
+    - ${HOME}/.cargo/git:/cargo/git
+    - ${HOME}/.cargo/config:/cargo/config.toml
+  working_dir: /workspace
+  environment:
+    - CARGO_HOME=/cargo
+    - RUSTUP_HOME=/usr/local/rustup
+
+# ============ 编译服务 ============
+# 用于跨平台编译，支持 x86_64/aarch64 Linux 和 Windows
+services:
+  # Debug 版本编译
+  build-x86_64:
+    <<: *rust-settings
+    command: cargo build --target x86_64-unknown-linux-gnu --all-features
+
+  build-aarch64:
+    <<: *rust-settings
+    command: cargo build --target aarch64-unknown-linux-gnu --all-features
+
+  build-win64:
+    <<: *rust-settings
+    command: cargo build --target x86_64-pc-windows-gnu --all-features
+
+  # Release 版本编译（优化后，体积更小）
+  build-release-x86_64:
+    <<: *rust-settings
+    command: cargo build --target x86_64-unknown-linux-gnu --release
+
+  build-release-aarch64:
+    <<: *rust-settings
+    command: cargo build --target aarch64-unknown-linux-gnu --release
+
+  build-release-win64:
+    <<: *rust-settings
+    command: cargo build --target x86_64-pc-windows-gnu --release
+
+  # ============ 测试服务 ============
+  # 测试环境：MQTT Broker + TCP Echo Server + Proxy + Portal + Test Client
+  # MQTT Broker：用于 WebRTC 信令交换
+  mqtt-broker:
+    image: swr.cn-north-4.myhuaweicloud.com/ddn-k8s/docker.io/library/eclipse-mosquitto:2.0.15
+    command: mosquitto -c /mosquitto-no-auth.conf
+    ports:
+      - 1883:1883
+    volumes:
+      - ${PWD}/test/mosquitto/config:/mosquitto/config
+      - ${PWD}/test/mosquitto/data:/mosquitto/data
+      - ${PWD}/test/mosquitto/log:/mosquitto/log
+    networks:
+      - mqtt-net
+
+  test-echo-server:
+    image: python:3.10-slim
+    volumes:
+      - ${PWD}/test/py/server.py:/server.py
+    command: python3 /server.py --addr 0.0.0.0:12345
+    networks:
+      - server-net
+
+  test-proxyd:
+    image: ubuntu:22.04
+    volumes:
+      - ./target/x86_64-unknown-linux-gnu/debug/proxyd:/proxyd
+    # environment:
+    #   - RUST_LOG=debug
+    command: sh -c "sleep 0.1 && ./proxyd --local-id robot_01 --mqtt-broker mqtt://mqtt-broker:1883 --proxy-addr test-echo-server:12345"
+    depends_on:
+      - mqtt-broker
+      - test-echo-server
+    networks:
+      - mqtt-net
+      - server-net
+
+  test-portald:
+    image: ubuntu:22.04
+    volumes:
+      - ./target/x86_64-unknown-linux-gnu/debug/portald:/portald
+    # environment:
+    #   - RUST_LOG=debug
+    command: sh -c "sleep 0.1 && ./portald --local-id user_01 --remote-id robot_01 --mqtt-broker mqtt://mqtt-broker:1883 --portal-addr 0.0.0.0:54321"
+    depends_on:
+      - mqtt-broker
+    networks:
+      - mqtt-net
+      - client-net
+
+  test-echo-client:
+    image: python:3.10-slim
+    volumes:
+      - ${PWD}/test/py/client.py:/client.py
+    command: python3 /client.py --addr test-portald:54321
+    depends_on:
+      - test-portald
+    networks:
+      - client-net
+
+networks:
+  mqtt-net:
+    driver: bridge
+  server-net:
+    driver: bridge
+  client-net:
+    driver: bridge

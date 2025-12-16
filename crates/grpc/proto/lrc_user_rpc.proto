@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+// loong remote rpc communication user end apis
+package lrc.user.rpc;
+
+import "google/protobuf/empty.proto";
+
+enum PortalType {
+  INET = 0;
+  UNIX = 1;
+}
+
+message Config {
+  string user_id = 1;  // 如果不提供user_id，则需要在命令行提供
+  string robot_id = 2;
+  string service_name = 3;
+  PortalType type = 4;
+  
+  // only if type is INET, demo: "12345"
+  // if not present, use random port
+  string inet_port = 5;  
+  // only if type is UNIX, demo: "/tmp/rpc_gps.sock"
+  // if not present, use default file
+  string unix_file = 6; 
+}
+
+
+message SockAddr { 
+  // if type=INET：return "0.0.0.0:12345"
+  // if type=UNIX: return "unix:///tmp/rpc_gps.sock"
+  string uri = 1; 
+}
+
+
+service PortalLauncher {
+  // 构造Portal
+  rpc CreatePortal(Config) returns (SockAddr);
+
+  // 析构Portal
+  rpc DestroyPortal(Config) returns (google.protobuf.Empty);
+}
