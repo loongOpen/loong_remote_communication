@@ -1,0 +1,629 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>loong_remote_communication</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon-de23e50b.svg">
+        <link rel="shortcut icon" href="favicon-8114d1fc.png">
+        <link rel="stylesheet" href="css/variables-8adf115d.css">
+        <link rel="stylesheet" href="css/general-2459343d.css">
+        <link rel="stylesheet" href="css/chrome-ae938929.css">
+        <link rel="stylesheet" href="css/print-9e4910d8.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="fonts/fonts-9644e21d.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="mdbook-highlight-css" href="highlight-493f70e1.css">
+        <link rel="stylesheet" id="mdbook-tomorrow-night-css" href="tomorrow-night-4c0ae647.css">
+        <link rel="stylesheet" id="mdbook-ayu-highlight-css" href="ayu-highlight-3fdfc3ac.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+        <!-- Provide site root and default themes to javascript -->
+        <script>
+            const path_to_root = "";
+            const default_light_theme = "light";
+            const default_dark_theme = "navy";
+            window.path_to_searchindex_js = "searchindex-9c558e14.js";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc-7a35eb38.js"></script>
+    </head>
+    <body>
+    <div id="mdbook-help-container">
+        <div id="mdbook-help-popup">
+            <h2 class="mdbook-help-title">Keyboard shortcuts</h2>
+            <div>
+                <p>Press <kbd>←</kbd> or <kbd>→</kbd> to navigate between chapters</p>
+                <p>Press <kbd>S</kbd> or <kbd>/</kbd> to search in the book</p>
+                <p>Press <kbd>?</kbd> to show this help</p>
+                <p>Press <kbd>Esc</kbd> to hide this help</p>
+            </div>
+        </div>
+    </div>
+    <div id="mdbook-body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                let theme = localStorage.getItem('mdbook-theme');
+                let sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            const default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? default_dark_theme : default_light_theme;
+            let theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="mdbook-sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            let sidebar = null;
+            const sidebar_toggle = document.getElementById("mdbook-sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+                sidebar_toggle.checked = false;
+            }
+            if (sidebar === 'visible') {
+                sidebar_toggle.checked = true;
+            } else {
+                html.classList.remove('sidebar-visible');
+            }
+        </script>
+
+        <nav id="mdbook-sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="mdbook-sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="mdbook-page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="mdbook-menu-bar-hover-placeholder"></div>
+                <div id="mdbook-menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="mdbook-sidebar-toggle" class="icon-button" for="mdbook-sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="mdbook-sidebar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg></span>
+                        </label>
+                        <button id="mdbook-theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="mdbook-theme-list">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M371.3 367.1c27.3-3.9 51.9-19.4 67.2-42.9L600.2 74.1c12.6-19.5 9.4-45.3-7.6-61.2S549.7-4.4 531.1 9.6L294.4 187.2c-24 18-38.2 46.1-38.4 76.1L371.3 367.1zm-19.6 25.4l-116-104.4C175.9 290.3 128 339.6 128 400c0 3.9 .2 7.8 .6 11.6c1.8 17.5-10.2 36.4-27.8 36.4H96c-17.7 0-32 14.3-32 32s14.3 32 32 32H240c61.9 0 112-50.1 112-112c0-2.5-.1-5-.2-7.5z"/></svg></span>
+                        </button>
+                        <ul id="mdbook-theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-default_theme">Auto</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="mdbook-theme-ayu">Ayu</button></li>
+                        </ul>
+                        <button id="mdbook-search-toggle" class="icon-button" type="button" title="Search (`/`)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="/ s" aria-controls="mdbook-searchbar">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352c79.5 0 144-64.5 144-144s-64.5-144-144-144S64 128.5 64 208s64.5 144 144 144z"/></svg></span>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">loong_remote_communication</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <span class=fa-svg id="print-button"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M128 0C92.7 0 64 28.7 64 64v96h64V64H354.7L384 93.3V160h64V93.3c0-17-6.7-33.3-18.7-45.3L400 18.7C388 6.7 371.7 0 354.7 0H128zM384 352v32 64H128V384 368 352H384zm64 32h32c17.7 0 32-14.3 32-32V256c0-35.3-28.7-64-64-64H64c-35.3 0-64 28.7-64 64v96c0 17.7 14.3 32 32 32H64v64c0 35.3 28.7 64 64 64H384c35.3 0 64-28.7 64-64V384zm-16-88c-13.3 0-24-10.7-24-24s10.7-24 24-24s24 10.7 24 24s-10.7 24-24 24z"/></svg></span>
+                        </a>
+                        <a href="https://github.com/loongOpen/loong_remote_communication" title="Git repository" aria-label="Git repository">
+                            <span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6zm-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3zm44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9zM244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8zM97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1zm-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7zm32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1zm-11.4-14.7c-1.6 1-1.6 3.6 0 5.9 1.6 2.3 4.3 3.3 5.6 2.3 1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2z"/></svg></span>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="mdbook-search-wrapper" class="hidden">
+                    <form id="mdbook-searchbar-outer" class="searchbar-outer">
+                        <div class="search-wrapper">
+                            <input type="search" id="mdbook-searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="mdbook-searchresults-outer" aria-describedby="searchresults-header">
+                            <div class="spinner-wrapper">
+                                <span class=fa-svg id="fa-spin"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M304 48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zm0 416c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM48 304c26.5 0 48-21.5 48-48s-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48zm464-48c0-26.5-21.5-48-48-48s-48 21.5-48 48s21.5 48 48 48s48-21.5 48-48zM142.9 437c18.7-18.7 18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zm0-294.2c18.7-18.7 18.7-49.1 0-67.9S93.7 56.2 75 75s-18.7 49.1 0 67.9s49.1 18.7 67.9 0zM369.1 437c18.7 18.7 49.1 18.7 67.9 0s18.7-49.1 0-67.9s-49.1-18.7-67.9 0s-18.7 49.1 0 67.9z"/></svg></span>
+                            </div>
+                        </div>
+                    </form>
+                    <div id="mdbook-searchresults-outer" class="searchresults-outer hidden">
+                        <div id="mdbook-searchresults-header" class="searchresults-header"></div>
+                        <ul id="mdbook-searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('mdbook-sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('mdbook-sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#mdbook-sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="mdbook-content" class="content">
+                    <main>
+                        <h1 id="-架构设计"><a class="header" href="#-架构设计">🏗️ 架构设计</a></h1>
+<h2 id="-1-动机从远程控制到-robot-as-a-service"><a class="header" href="#-1-动机从远程控制到-robot-as-a-service">🎯 1. 动机：从远程控制到 Robot as a Service</a></h2>
+<p><img src="assets/motivation.png" alt="motivation"></p>
+<h3 id="-现有通用方案的挑战"><a class="header" href="#-现有通用方案的挑战">⚠️ 现有通用方案的挑战</a></h3>
+<p>A. <strong>📡 中心化流式服务</strong> (WebSocket/MQTT)：通过流式协议中转指令是 IoT 领域的常见做法，但在复杂的机器人控制场景</p>
+<ul>
+<li><strong>🔗 架构耦合</strong>：业务逻辑与通信协议深度绑定，需开发维护复杂的私有通信协议。</li>
+<li><strong>💰 资源负担</strong>：需要长期维护高可用的公网中转服务</li>
+</ul>
+<p>B. <strong>🔀 通用反向代理与隧道</strong> (Frp / Cloudflare Tunnel / VPN)</p>
+<ul>
+<li><strong>🎯 设计初衷差异</strong>：上述方案通常是为了让长期在线的内网服务暴露于公网，而机器人的常态是“频繁开关机/网络切换“</li>
+<li><strong>⚙️ 资源与运维压力</strong>：配置复杂，需要为每个终端维护公网映射记录或依赖中心化带宽中转</li>
+</ul>
+<h2 id="-2-架构基于-webrtc-的透明隧道"><a class="header" href="#-2-架构基于-webrtc-的透明隧道">🏗️ 2. 架构：基于 WebRTC 的透明隧道</a></h2>
+<p><img src="assets/architecture.png" alt="architecture"></p>
+<p>本项目实现了一个跨平台的中间件，利用 WebRTC DataChannel 构建一个能够穿透 NAT 的 <strong>TCP 透明传输层</strong>。</p>
+<h3 id="-核心机制与组件"><a class="header" href="#-核心机制与组件">🔧 核心机制与组件</a></h3>
+<ul>
+<li><strong>🖥️ Portal (用户/控制侧)</strong>： 发起 WebRTC 连接，监听本地端口，等待 TCP 请求并桥接 DataChannel。</li>
+<li><strong>🤖 Proxy (机器人/设备侧)</strong>：等待 WebRTC 连接，等待 DataChannel 并桥接 TCP 连接。</li>
+</ul>
+<h3 id="-mqtt-信令通道"><a class="header" href="#-mqtt-信令通道">📡 MQTT 信令通道</a></h3>
+<p>采用 <strong>MQTT</strong> 作为信令通道，解耦“连接握手“与“权限管理“</p>
+<ul>
+<li><strong>🤝 连接握手</strong>
+<ol>
+<li><strong>📥 接受方</strong>：Proxy 订阅 callee 信令话题，等待 offer，并发布 answer 到 caller 信令话题；上下线时发布 callee 状态话题；</li>
+<li><strong>📤 发起方</strong>：Portal 通过 callee 状态话题等待上线； 发布 offer 到 callee 信令话题，并从 caller 信令话题等待 answer；</li>
+</ol>
+</li>
+<li><strong>🔐 权限管理</strong> EMQX + Authing
+<ul>
+<li>鉴权操作全部发生在 mqtt broker</li>
+<li>将复杂的<strong>机器人控制权限</strong>抽象为<strong>标准的 MQTT Topic 读写权限</strong></li>
+</ul>
+</li>
+</ul>
+<h3 id="-技术选型为什么选择-rust"><a class="header" href="#-技术选型为什么选择-rust">🦀 技术选型：为什么选择 Rust？</a></h3>
+<ul>
+<li><strong>⚡ 统一的异步生态</strong>：基于 <code>Tokio</code> 无缝集成 <code>rumqttc</code> (MQTT)、<code>webrtc-rs</code> 和 <code>tonic</code> (gRPC)，避免上下文切换开销与复杂的架构设计。</li>
+<li><strong>🛡️ 内存与线程安全</strong>：所有权机制在编译期消除了并发数据竞争，这对于同时处理信令、WebRTC 状态机和 TCP 连接的复杂异步系统至关重要。</li>
+<li><strong>🚀 高性能与跨平台</strong>：Rust 提供了接近 C/C++ 的性能；支持 Android、Linux (ARM/x86) 等多种架构。</li>
+</ul>
+<h2 id="-3-核心优势"><a class="header" href="#-3-核心优势">✨ 3. 核心优势</a></h2>
+<h3 id="-协议无关的透明传输"><a class="header" href="#-协议无关的透明传输">🔌 协议无关的透明传输</a></h3>
+<ul>
+<li><strong>🌐 协议无关</strong>：支持所有基于 TCP 的应用层协议。</li>
+<li><strong>⚡ 高性能转发</strong>：Rust 零成本抽象设计，极低转发开销，充分利用 P2P 直连。</li>
+</ul>
+<h3 id="-极简部署与一致性体验"><a class="header" href="#-极简部署与一致性体验">🚀 极简部署与一致性体验</a></h3>
+<ul>
+<li><strong>💻 纯软件方案</strong>：仅需维护 MQTT Broker 和 TURN/STUN 服务，端侧仅需一对可执行文件</li>
+<li><strong>⚙️ 配置简单</strong>：通过唯一 ID 标识和连接，无需复杂 IP 路由</li>
+<li><strong>✨ 体验一致</strong>：不侵入业务逻辑，公网和局域网使用完全相同的接口代码</li>
+</ul>
+<h2 id="-4-未来展望"><a class="header" href="#-4-未来展望">🔮 4. 未来展望</a></h2>
+<ul>
+<li><strong>👥 集群控制</strong>：单 Portal 连接多个 Proxy，实现请求广播（如机器人编队控制）</li>
+<li><strong>♻️ 连接复用</strong>：DataChannel 和 Socket 复用机制，减少握手开销</li>
+<li><strong>🔒 HTTPS 支持</strong></li>
+<li><strong>🔐 基于 EMQX + Authing 统一鉴权体系</strong></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="-快速开始"><a class="header" href="#-快速开始">🚀 快速开始</a></h1>
+<p>本指南将协助您快速搭建 <code>remote_rpc</code> 运行环境。系统依赖公网基础设施进行信令交换与 NAT 穿透。</p>
+<h2 id="-1-基础设施准备"><a class="header" href="#-1-基础设施准备">📦 1. 基础设施准备</a></h2>
+<p>为确保 WebRTC 在复杂网络环境（如对称 NAT）下正常工作，需在公网服务器上部署：</p>
+<h3 id="必需服务"><a class="header" href="#必需服务">必需服务</a></h3>
+<ol>
+<li>
+<p><strong>📡 MQTT Broker</strong>（信令交换）</p>
+<ul>
+<li>推荐：Eclipse Mosquitto 或 EMQX</li>
+<li><a href="https://hub.docker.com/_/eclipse-mosquitto">Mosquitto Docker 指南</a></li>
+<li><a href="https://hub.docker.com/_/emqx">EMQX Docker 指南</a></li>
+</ul>
+</li>
+<li>
+<p><strong>🔀 TURN Server</strong>（NAT 穿透中继）</p>
+<ul>
+<li>推荐：Coturn</li>
+<li><a href="https://hub.docker.com/r/coturn/coturn">Coturn Docker 指南</a></li>
+</ul>
+</li>
+</ol>
+<h3 id="可选服务"><a class="header" href="#可选服务">可选服务</a></h3>
+<ol start="3">
+<li><strong>🔍 STUN Server</strong>（NAT 检测）
+<ul>
+<li>可使用公共服务器：<code>stun.l.google.com:19302</code> 或 <code>stun.cloudflare.com:3478</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="-2-快速运行"><a class="header" href="#-2-快速运行">🚀 2. 快速运行</a></h2>
+<p><strong>场景</strong>：从笔记本电脑访问内网机器人上的 TCP 服务（端口 <code>12345</code>）</p>
+<h3 id="step-1--启动设备端代理-proxy"><a class="header" href="#step-1--启动设备端代理-proxy">Step 1: 🤖 启动设备端代理 (Proxy)</a></h3>
+<pre><code class="language-bash">./proxyd \
+  --local-id robot_1 \
+  --proxy-addr 127.0.0.1:12345 \
+  --mqtt-broker mqtt://&lt;public_ip&gt;:1883 \
+  --peer-turn turn:user:pass@host:port
+</code></pre>
+<h3 id="step-2--启动用户端入口-portal"><a class="header" href="#step-2--启动用户端入口-portal">Step 2: 🖥️ 启动用户端入口 (Portal)</a></h3>
+<pre><code class="language-bash">./portald \
+  --local-id user_1 \
+  --remote-id robot_1 \
+  --portal-addr 127.0.0.1:54321 \
+  --mqtt-broker mqtt://&lt;public_ip&gt;:1883 \
+  --peer-turn turn:user:pass@host:port
+</code></pre>
+<h3 id="step-3--验证连接"><a class="header" href="#step-3--验证连接">Step 3: ✅ 验证连接</a></h3>
+<p>当 <code>portald</code> 提示连接成功后，访问 <code>127.0.0.1:54321</code> 即等同于访问机器人端的 <code>127.0.0.1:12345</code>。</p>
+<blockquote>
+<p>💡 此时 gRPC Client 可以直接连接 127.0.0.1:54321 进行操作。</p>
+</blockquote>
+<hr>
+<h2 id="-3-命令行参数详解-cli-reference"><a class="header" href="#-3-命令行参数详解-cli-reference">📖 3. 命令行参数详解 (CLI Reference)</a></h2>
+<h3 id="-proxyd-robot-side"><a class="header" href="#-proxyd-robot-side">🤖 proxyd (Robot Side)</a></h3>
+<p>proxyd 负责驻守在设备端，等待来自 Portal 的连接请求，并桥接本地 TCP 服务。</p>
+<pre><code class="language-bash">$ ./proxyd -h
+Usage: proxyd [OPTIONS]
+
+Options:
+  -l, --local-id        &lt;LOCAL_ID&gt;     本地 ID [必须]
+  -p, --proxy-addr      &lt;PROXY_ADDR&gt;   需要被代理的目标服务地址 [必须] (例如: 127.0.0.1:9000 或 unix:///tmp/sock)
+  -b, --mqtt-broker     &lt;BROKER&gt;       MQTT Broker 地址 [默认: mqtt://localhost:1883]
+      --mqtt-username   &lt;USERNAME&gt;     MQTT 用户名 [可选]
+      --mqtt-password   &lt;PASSWORD&gt;     MQTT 密码   [可选]
+      --peer-stun       &lt;STUN&gt;         STUN 服务器地址 (可指定多个) [默认: stun:stun.l.google.com:19302]
+      --peer-turn       &lt;TURN&gt;         TURN 服务器地址 (可指定多个) (格式: turn:user:pass@host:port)
+      --online-timeout  &lt;SEC&gt;          等待对端上线超时时间 [默认: 5]
+      --connect-timeout &lt;SEC&gt;          WebRTC 建连超时时间 [默认: 5]
+  -h, --help                           显示帮助信息
+</code></pre>
+<h3 id="-portald-user-side"><a class="header" href="#-portald-user-side">🖥️ portald (User Side)</a></h3>
+<p>portald 运行在控制端，负责开启本地入口端口，并寻找远程 Peer 建立隧道。</p>
+<pre><code class="language-bash">$ ./portald -h
+Usage: portald [OPTIONS]
+
+Options:
+  -l, --local-id        &lt;LOCAL_ID&gt;     本地 ID [必须]
+  -r, --remote-id       &lt;REMOTE_ID&gt;    目标设备的 ID [必须]
+  -p, --portal-addr     &lt;PORTAL_ADDR&gt;  代理到本地的地址 [必须] (例如: 127.0.0.1:9000 或 unix:///tmp/sock)
+  -b, --mqtt-broker     &lt;BROKER&gt;       MQTT Broker 地址 [默认: mqtt://localhost:1883]
+      --mqtt-username   &lt;USERNAME&gt;     MQTT 用户名 [可选]
+      --mqtt-password   &lt;PASSWORD&gt;     MQTT 密码   [可选]
+      --peer-stun       &lt;STUN&gt;         STUN 服务器地址 (可指定多个) [默认: stun:stun.l.google.com:19302]
+      --peer-turn       &lt;TURN&gt;         TURN 服务器地址 (可指定多个) (格式: turn:user:pass@host:port)
+      --online-timeout  &lt;SEC&gt;          等待对端上线超时时间 [默认: 5]
+      --connect-timeout &lt;SEC&gt;          WebRTC 建连超时时间 [默认: 5]
+  -h, --help                           显示帮助信息
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="编译与测试指南"><a class="header" href="#编译与测试指南">编译与测试指南</a></h1>
+<p>本指南介绍如何 进行 <code>loong_remote_communication</code> 的跨平台编译和集成测试。</p>
+<h2 id="1-编译"><a class="header" href="#1-编译">1. 编译</a></h2>
+<h3 id="releaseslow"><a class="header" href="#releaseslow">Release:slow</a></h3>
+<pre><code class="language-bash">docker compose run --rm build-release-x86_64
+docker compose run --rm build-release-aarch64
+docker compose run --rm build-release-win64
+</code></pre>
+<h3 id="debugfast"><a class="header" href="#debugfast">Debug:fast</a></h3>
+<pre><code class="language-bash">docker compose run --rm build-x86_64
+docker compose run --rm build-aarch64
+docker compose run --rm build-win64
+</code></pre>
+<p>编译产物位于 <code>target/&lt;target-triple&gt;/debug/</code> 或 <code>target/&lt;target-triple&gt;/release/</code> 目录。</p>
+<h2 id="2-测试"><a class="header" href="#2-测试">2. 测试</a></h2>
+<h3 id="步骤-1-启动-mqtt-broker"><a class="header" href="#步骤-1-启动-mqtt-broker">步骤 1: 启动 MQTT Broker</a></h3>
+<pre><code class="language-bash">docker compose up -d mqtt-broker
+docker compose ps mqtt-broker
+</code></pre>
+<h3 id="步骤-2-设备端启动-echo-服务器和-proxyd"><a class="header" href="#步骤-2-设备端启动-echo-服务器和-proxyd">步骤 2: 设备端：启动 Echo 服务器和 proxyd</a></h3>
+<p><strong>使用 TCP socket：</strong></p>
+<pre><code class="language-bash">python3 test/py/server.py --addr 0.0.0.0:12345
+
+./target/x86_64-unknown-linux-gnu/debug/proxyd \
+  --local-id robot_01 \
+  --mqtt-broker mqtt://127.0.0.1:1883 \
+  --proxy-addr 127.0.0.1:12345
+</code></pre>
+<p><strong>使用 Unix socket：</strong></p>
+<pre><code class="language-bash">python3 test/py/server.py --addr unix:///tmp/echo-server.sock
+
+./target/x86_64-unknown-linux-gnu/debug/proxyd \
+  --local-id robot_01 \
+  --mqtt-broker mqtt://127.0.0.1:1883 \
+  --proxy-addr unix:///tmp/echo-server.sock
+</code></pre>
+<h3 id="步骤-3-用户端启动-proxyd-和-echo-客户端"><a class="header" href="#步骤-3-用户端启动-proxyd-和-echo-客户端">步骤 3: 用户端：启动 proxyd 和 Echo 客户端</a></h3>
+<p><strong>使用 TCP socket：</strong></p>
+<pre><code class="language-bash">./target/x86_64-unknown-linux-gnu/debug/portald \
+  --local-id user_01 \
+  --remote-id robot_01 \
+  --mqtt-broker mqtt://127.0.0.1:1883 \
+  --portal-addr 0.0.0.0:54321
+
+python3 test/py/client.py --addr 127.0.0.1:54321
+</code></pre>
+<p><strong>使用 Unix socket：</strong></p>
+<pre><code class="language-bash">./target/x86_64-unknown-linux-gnu/debug/portald \
+  --local-id user_01 \
+  --remote-id robot_01 \
+  --mqtt-broker mqtt://127.0.0.1:1883 \
+  --portal-addr unix:///tmp/echo-client.sock
+
+python3 test/py/client.py --addr unix:///tmp/echo-client.sock
+</code></pre>
+<h3 id="监控-mqtt-消息"><a class="header" href="#监控-mqtt-消息">监控 MQTT 消息</a></h3>
+<p>运行以下命令，可以实时查看 MQTT 信令消息：</p>
+<pre><code class="language-sh"># 查看设备的在线状态
+mosquitto_sub -h 127.0.0.1 -t 'callee/+/status' -v
+
+# 查看用户的在线状态
+mosquitto_sub -h 127.0.0.1 -t 'caller/+/status' -v
+
+# 查看用户向设备端发送的 offer信令
+mosquitto_sub -h 127.0.0.1 -t 'callee/+/signal' -v
+
+# 查看设备端向用户返回的 answer信令
+mosquitto_sub -h 127.0.0.1 -t 'caller/+/signal' -v
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div>
+<h1 id="-portal-hub-api"><a class="header" href="#-portal-hub-api">🔌 Portal Hub API</a></h1>
+<p>Portal Hub 提供了统一的 API 服务，用于动态创建和管理 WebRTC Portal。与 <code>portald</code> 不同，Portal Hub 支持多用户、多服务的集中管理。</p>
+<h2 id="-概述"><a class="header" href="#-概述">📋 概述</a></h2>
+<p>Portal Hub 提供两种接口：</p>
+<ul>
+<li><strong>🔌 gRPC API</strong> (<code>portal_hub_grpc</code>)：提供 gRPC 接口供管理 portal</li>
+<li><strong>🌐 REST API</strong> (<code>portal_hub_rest</code>)：提供 REST 接口供管理 portal</li>
+</ul>
+<pre><code class="language-mermaid">sequenceDiagram
+    participant Client as 客户端应用
+    participant Hub as Portal Hub
+    participant MQTT as MQTT Broker
+    participant Proxy as 远端 Proxy (proxyd)
+    participant Service as 远端服务
+
+    Note over Client,Service: 1. 启动阶段
+    Hub-&gt;&gt;MQTT: 连接 MQTT Broker
+    Proxy-&gt;&gt;MQTT: 连接 MQTT Broker&lt;br/&gt;订阅信令话题
+    Service-&gt;&gt;Proxy: 启动本地服务&lt;br/&gt;(如 gRPC/REST Server)
+
+    Note over Client,Service: 2. 创建 Portal
+    Client-&gt;&gt;Hub: POST /portal&lt;br/&gt;(创建 Portal 请求)
+    Hub-&gt;&gt;MQTT: 查找设备在线状态
+    MQTT--&gt;&gt;Hub: 设备在线
+    Hub-&gt;&gt;MQTT: 发送 WebRTC offer
+    Proxy-&gt;&gt;MQTT: 接收 offer，发送 answer
+    Hub-&gt;&gt;Proxy: 建立 WebRTC 连接
+    Hub--&gt;&gt;Client: 返回 Portal 地址&lt;br/&gt;(如 "0.0.0.0:12345")
+
+    Note over Client,Service: 3. 使用 Portal 访问服务
+    Client-&gt;&gt;Hub: 连接 Portal 地址&lt;br/&gt;(TCP/Unix Socket)
+    Hub-&gt;&gt;Proxy: 通过 WebRTC DataChannel&lt;br/&gt;转发数据
+    Proxy-&gt;&gt;Service: 转发到本地服务
+    Service-&gt;&gt;Proxy: 返回响应
+    Proxy-&gt;&gt;Hub: 通过 WebRTC 返回数据
+    Hub--&gt;&gt;Client: 返回服务响应
+
+    Note over Client,Service: 4. 销毁 Portal
+    Client-&gt;&gt;Hub: DELETE /portal&lt;br/&gt;(销毁 Portal)
+    Hub-&gt;&gt;Proxy: 关闭 WebRTC 连接
+    Hub--&gt;&gt;Client: 确认销毁
+</code></pre>
+<h2 id="-命令行参数详解"><a class="header" href="#-命令行参数详解">📖 命令行参数详解</a></h2>
+<h3 id="-portal_hub_grpc"><a class="header" href="#-portal_hub_grpc">🔌 portal_hub_grpc</a></h3>
+<p><code>portal_hub_grpc</code> 运行在控制端，提供 gRPC 服务用于创建和管理 Portal。</p>
+<blockquote>
+<p>接口定义见 <code>crates/grpc/proto/lrc_user_rpc.proto</code></p>
+</blockquote>
+<pre><code class="language-bash">$ ./portal_hub_grpc -h
+Usage: portal_hub_grpc [OPTIONS]
+
+Options:
+  -u, --user-id &lt;USER_ID&gt;
+          默认用户 ID，当请求中未提供 user_id 时使用 [默认: ]
+  -l, --listen &lt;LISTEN&gt;
+          Portal hub 的 gRPC 服务器监听地址 [默认: [::1]:50051]
+  -m, --mqtt-broker &lt;MQTT_BROKER&gt;
+          MQTT Broker 地址 (mqtt://host:port) [默认: mqtt://localhost:1883]
+      --mqtt-username &lt;MQTT_USERNAME&gt;
+          MQTT 用户名 [可选]
+      --mqtt-password &lt;MQTT_PASSWORD&gt;
+          MQTT 密码 [可选]
+      --peer-stun &lt;PEER_STUN&gt;
+          STUN 服务器地址 (例如: stun:stun.l.google.com:19302)，可指定多个 [默认: stun:stun.l.google.com:19302]
+      --peer-turn &lt;PEER_TURN&gt;
+          TURN 服务器地址 (例如: turn:user:pass@host:port)，可指定多个
+      --online-timeout &lt;ONLINE_TIMEOUT&gt;
+          等待远程端上线超时时间 (秒) [默认: 5]
+      --connect-timeout &lt;CONNECT_TIMEOUT&gt;
+          WebRTC 连接超时时间 (秒) [默认: 5]
+  -h, --help
+          显示帮助信息
+</code></pre>
+<h3 id="-portal_hub_rest"><a class="header" href="#-portal_hub_rest">🌐 portal_hub_rest</a></h3>
+<p><code>portal_hub_rest</code> 运行在控制端，提供 HTTP REST API 用于创建和管理 Portal。</p>
+<pre><code class="language-bash">$ ./portal_hub_rest -h
+Usage: portal_hub_rest [OPTIONS]
+
+Options:
+  -u, --user-id &lt;USER_ID&gt;
+          默认用户 ID，当请求中未提供 user_id 时使用 [默认: ]
+  -l, --listen &lt;LISTEN&gt;
+          Portal hub 的 HTTP 服务器监听地址 [默认: 127.0.0.1:3000]
+  -m, --mqtt-broker &lt;MQTT_BROKER&gt;
+          MQTT Broker 地址 (mqtt://host:port) [默认: mqtt://localhost:1883]
+      --mqtt-username &lt;MQTT_USERNAME&gt;
+          MQTT 用户名 [可选]
+      --mqtt-password &lt;MQTT_PASSWORD&gt;
+          MQTT 密码 [可选]
+      --peer-stun &lt;PEER_STUN&gt;
+          STUN 服务器地址 (例如: stun:stun.l.google.com:19302)，可指定多个 [默认: stun:stun.l.google.com:19302]
+      --peer-turn &lt;PEER_TURN&gt;
+          TURN 服务器地址 (例如: turn:user:pass@host:port)，可指定多个
+      --online-timeout &lt;ONLINE_TIMEOUT&gt;
+          等待远程端上线超时时间 (秒) [默认: 5]
+      --connect-timeout &lt;CONNECT_TIMEOUT&gt;
+          WebRTC 连接超时时间 (秒) [默认: 5]
+  -h, --help
+          显示帮助信息
+</code></pre>
+<h2 id="-api-使用说明"><a class="header" href="#-api-使用说明">📚 API 使用说明</a></h2>
+<h3 id="-创建-portal"><a class="header" href="#-创建-portal">➕ 创建 Portal</a></h3>
+<p><strong>端点</strong>: <code>POST /portal</code> | <code>lrc.user.rpc.PortalLauncher/CreatePortal</code></p>
+<p><strong>请求体</strong>:</p>
+<blockquote>
+<p>grpc 请求体 <code>Config</code> 与 Json 请求体字段一致</p>
+</blockquote>
+<pre><code class="language-json">{
+  "user_id": "user_1", // 可选，用户 ID
+  "robot_id": "robot_1", // 必须，机器人/设备 ID
+  "service_name": "tcp_service", // 必须，服务名称
+  "portal_type": "inet", // 可选，"inet" 或 "unix"，默认 "inet"
+  "inet_port": "12345", // 可选，仅当 portal_type="inet" 时有效
+  "unix_file": "/tmp/sock" // 可选，仅当 portal_type="unix" 时有效
+}
+</code></pre>
+<p><strong>响应体</strong>:</p>
+<blockquote>
+<p>grpc 响应体 <code>SockAddr</code> 与 Json 请求体字段一致</p>
+</blockquote>
+<pre><code class="language-json">{
+  "uri": "0.0.0.0:12345" // Portal 地址 URI
+  // type=INET: "0.0.0.0:12345"
+  // type=UNIX: "unix:///tmp/rpc_gps.sock"
+}
+</code></pre>
+<h3 id="-销毁-portal"><a class="header" href="#-销毁-portal">➖ 销毁 Portal</a></h3>
+<p><strong>端点</strong>: <code>DELETE /portal</code> | <code>lrc.user.rpc.PortalLauncher/DestroyPortal</code></p>
+<p><strong>请求体</strong>: 同 <code>CreatePortal</code> 的 <code>Config</code>（至少需要 <code>robot_id</code> 和 <code>service_name</code>）</p>
+<p><strong>响应体</strong>: 空消息</p>
+<h2 id="-代码示例"><a class="header" href="#-代码示例">🔗 代码示例</a></h2>
+<p>完整的代码示例请参考 <code>examples/</code> 目录：</p>
+<ul>
+<li>
+<p><strong>REST API 示例</strong>：</p>
+<ul>
+<li><a href="https://github.com/loongOpen/loong_remote_communication/examples/rest_server.py"><code>examples/rest_server.py</code></a> - REST 服务端示例</li>
+<li><a href="https://github.com/loongOpen/loong_remote_communication/examples/rest_client_pipe.py"><code>examples/rest_client_pipe.py</code></a> - 通过 Portal Hub REST API 创建 Portal 并访问服务的客户端示例</li>
+</ul>
+</li>
+<li>
+<p><strong>gRPC API 示例</strong>：</p>
+<ul>
+<li><a href="https://github.com/loongOpen/loong_remote_communication/examples/grpc_server.py"><code>examples/grpc_server.py</code></a> - gRPC 服务端示例</li>
+<li><a href="https://github.com/loongOpen/loong_remote_communication/examples/grpc_client_pipe.py"><code>examples/grpc_client_pipe.py</code></a> - 通过 Portal Hub gRPC API 创建 Portal 并访问服务的客户端示例</li>
+</ul>
+</li>
+</ul>
+<h2 id="-使用场景"><a class="header" href="#-使用场景">🎯 使用场景</a></h2>
+<ol>
+<li><strong>☁️ 云平台设备管理</strong> - 通过统一的 API 管理多个设备的 Portal</li>
+<li><strong>🔧 微服务架构</strong> - 服务间通过 Portal Hub 动态建立连接</li>
+<li><strong>👥 多租户系统</strong> - 不同用户通过 <code>user_id</code> 隔离 Portal 资源</li>
+<li><strong>🧪 自动化测试</strong> - 通过 API 动态创建和销毁测试环境</li>
+</ol>
+<h2 id="-注意事项"><a class="header" href="#-注意事项">⚠️ 注意事项</a></h2>
+<ol>
+<li><strong>用户 ID 管理</strong>: 如果请求中未提供 <code>user_id</code>，必须通过命令行参数 <code>-u/--user-id</code> 设置默认值</li>
+<li><strong>远程 ID 构建</strong>: Portal Hub 会自动将 <code>robot_id</code> 和 <code>service_name</code> 组合为远程 ID，格式为 <code>{robot_id}-{service_name}</code></li>
+<li><strong>端口分配</strong>: 创建 INET 类型 Portal 时，如果不指定 <code>inet_port</code>，系统会自动分配随机端口</li>
+<li><strong>连接超时</strong>: 确保设备端（proxyd）已启动并在线，否则创建 Portal 会超时失败</li>
+</ol>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+        <template id=fa-eye><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M288 32c-80.8 0-145.5 36.8-192.6 80.6C48.6 156 17.3 208 2.5 243.7c-3.3 7.9-3.3 16.7 0 24.6C17.3 304 48.6 356 95.4 399.4C142.5 443.2 207.2 480 288 480s145.5-36.8 192.6-80.6c46.8-43.5 78.1-95.4 93-131.1c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C433.5 68.8 368.8 32 288 32zM432 256c0 79.5-64.5 144-144 144s-144-64.5-144-144s64.5-144 144-144s144 64.5 144 144zM288 192c0 35.3-28.7 64-64 64c-11.5 0-22.3-3-31.6-8.4c-.2 2.8-.4 5.5-.4 8.4c0 53 43 96 96 96s96-43 96-96s-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6z"/></svg></span></template>
+        <template id=fa-eye-slash><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M38.8 5.1C28.4-3.1 13.3-1.2 5.1 9.2S-1.2 34.7 9.2 42.9l592 464c10.4 8.2 25.5 6.3 33.7-4.1s6.3-25.5-4.1-33.7L525.6 386.7c39.6-40.6 66.4-86.1 79.9-118.4c3.3-7.9 3.3-16.7 0-24.6c-14.9-35.7-46.2-87.7-93-131.1C465.5 68.8 400.8 32 320 32c-68.2 0-125 26.3-169.3 60.8L38.8 5.1zM223.1 149.5C248.6 126.2 282.7 112 320 112c79.5 0 144 64.5 144 144c0 24.9-6.3 48.3-17.4 68.7L408 294.5c5.2-11.8 8-24.8 8-38.5c0-53-43-96-96-96c-2.8 0-5.6 .1-8.4 .4c5.3 9.3 8.4 20.1 8.4 31.6c0 10.2-2.4 19.8-6.6 28.3l-90.3-70.8zm223.1 298L373 389.9c-16.4 6.5-34.3 10.1-53 10.1c-79.5 0-144-64.5-144-144c0-6.9 .5-13.6 1.4-20.2L83.1 161.5C60.3 191.2 44 220.8 34.5 243.7c-3.3 7.9-3.3 16.7 0 24.6c14.9 35.7 46.2 87.7 93 131.1C174.5 443.2 239.2 480 320 480c47.8 0 89.9-12.9 126.2-32.5z"/></svg></span></template>
+        <template id=fa-copy><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M502.6 70.63l-61.25-61.25C435.4 3.371 427.2 0 418.7 0H255.1c-35.35 0-64 28.66-64 64l.0195 256C192 355.4 220.7 384 256 384h192c35.2 0 64-28.8 64-64V93.25C512 84.77 508.6 76.63 502.6 70.63zM464 320c0 8.836-7.164 16-16 16H255.1c-8.838 0-16-7.164-16-16L239.1 64.13c0-8.836 7.164-16 16-16h128L384 96c0 17.67 14.33 32 32 32h47.1V320zM272 448c0 8.836-7.164 16-16 16H63.1c-8.838 0-16-7.164-16-16L47.98 192.1c0-8.836 7.164-16 16-16H160V128H63.99c-35.35 0-64 28.65-64 64l.0098 256C.002 483.3 28.66 512 64 512h192c35.2 0 64-28.8 64-64v-32h-47.1L272 448z"/></svg></span></template>
+        <template id=fa-play><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M73 39c-14.8-9.1-33.4-9.4-48.5-.9S0 62.6 0 80V432c0 17.4 9.4 33.4 24.5 41.9s33.7 8.1 48.5-.9L361 297c14.3-8.7 23-24.2 23-41s-8.7-32.2-23-41L73 39z"/></svg></span></template>
+        <template id=fa-clock-rotate-left><span class=fa-svg><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 6.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc. --><path d="M75 75L41 41C25.9 25.9 0 36.6 0 57.9V168c0 13.3 10.7 24 24 24H134.1c21.4 0 32.1-25.9 17-41l-30.8-30.8C155 85.5 203 64 256 64c106 0 192 86 192 192s-86 192-192 192c-40.8 0-78.6-12.7-109.7-34.4c-14.5-10.1-34.4-6.6-44.6 7.9s-6.6 34.4 7.9 44.6C151.2 495 201.7 512 256 512c141.4 0 256-114.6 256-256S397.4 0 256 0C185.3 0 121.3 28.7 75 75zm181 53c-13.3 0-24 10.7-24 24V256c0 6.4 2.5 12.5 7 17l72 72c9.4 9.4 24.6 9.4 33.9 0s9.4-24.6 0-33.9l-65-65V152c0-13.3-10.7-24-24-24z"/></svg></span></template>
+
+
+        <script>
+            window.playground_line_numbers = true;
+        </script>
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+        <script src="ace-2a3cd908.js"></script>
+        <script src="mode-rust-2c9d5c9a.js"></script>
+        <script src="editor-16ca416c.js"></script>
+        <script src="theme-dawn-4493f9c8.js"></script>
+        <script src="theme-tomorrow_night-9dbe62a9.js"></script>
+
+        <script src="elasticlunr-ef4e11c1.min.js"></script>
+        <script src="mark-09e88c2c.min.js"></script>
+        <script src="searcher-c2a407aa.js"></script>
+
+        <script src="clipboard-1626706a.min.js"></script>
+        <script src="highlight-abc7f01d.js"></script>
+        <script src="book-a0b12cfe.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            MathJax.Hub.Register.StartupHook('End', function() {
+                window.setTimeout(window.print, 100);
+            });
+        });
+        </script>
+
+
+    </div>
+    </body>
+</html>
