@@ -35,15 +35,15 @@ services:
   # Release 版本编译（优化后，体积更小）
   build-release-x86_64:
     <<: *rust-settings
-    command: cargo build --target x86_64-unknown-linux-gnu --release
+    command: cargo build --target x86_64-unknown-linux-gnu --release --all-features
 
   build-release-aarch64:
     <<: *rust-settings
-    command: cargo build --target aarch64-unknown-linux-gnu --release
+    command: cargo build --target aarch64-unknown-linux-gnu --release --all-features
 
   build-release-win64:
     <<: *rust-settings
-    command: cargo build --target x86_64-pc-windows-gnu --release
+    command: cargo build --target x86_64-pc-windows-gnu --release --all-features
 
   # ============ 测试服务 ============
   # 测试环境：MQTT Broker + TCP Echo Server + Proxy + Portal + Test Client

@@ -64,3 +64,6 @@ mosquitto/log/
 __pycache__/
 *.pyc
 *.pyo
+
+*.tar.gz
+*.local
